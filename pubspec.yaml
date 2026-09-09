@@ -1,0 +1,31 @@
+name: context_clip
+description: "Keyboard-first clipboard workspace for developers and AI agents."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.9
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  provider: ^6.1.5
+  drift: ^2.28.1
+  drift_flutter: ^0.2.5
+  sqlite3_flutter_libs: ^0.5.39
+  path_provider: ^2.1.5
+  path: ^1.9.1
+  cryptography: ^2.7.0
+  tiktoken_tokenizer_gpt4o_o1: ^1.2.1
+  cupertino_ui: ^1.0.2
+  google_fonts: ^6.2.1
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  drift_dev: ^2.28.1
+  build_runner: ^2.5.4
+
+flutter:
+  uses-material-design: true
