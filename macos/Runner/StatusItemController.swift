@@ -16,7 +16,11 @@ final class StatusItemController: NSObject {
   private func setup() {
     let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     if let button = item.button {
-      if let image = NSImage(
+      if let image = NSImage(named: "StatusBarIcon") {
+        image.size = NSSize(width: 18, height: 18)
+        image.isTemplate = false
+        button.image = image
+      } else if let image = NSImage(
         systemSymbolName: "doc.on.clipboard",
         accessibilityDescription: "ContextClip"
       ) {

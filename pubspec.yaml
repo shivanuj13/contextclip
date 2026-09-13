@@ -1,7 +1,7 @@
 name: context_clip
 description: "Keyboard-first macOS clipboard workspace that redacts secrets and packs multi-clip context."
 publish_to: 'none'
-version: 1.0.0+1
+version: 1.1.0+2
 
 environment:
   sdk: ^3.10.9
@@ -31,3 +31,4 @@ flutter:
   uses-material-design: true
   assets:
     - LICENSE
+    - assets/brand/contextclip-icon.png

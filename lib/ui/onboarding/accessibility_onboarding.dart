@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../app/clipboard_controller.dart';
 import '../theme/signal_desk.dart';
+import '../widgets/brand_mark.dart';
 import '../widgets/feature_primer.dart';
 import '../widgets/hud_panel.dart';
 
@@ -111,7 +112,9 @@ class _AccessibilityOnboardingState extends State<AccessibilityOnboarding>
                                 weight: FontWeight.w700,
                               ).copyWith(letterSpacing: 2.0),
                             ),
-                            const SizedBox(height: 10),
+                            const SizedBox(height: 12),
+                            const BrandMark(size: 56),
+                            const SizedBox(height: 12),
                             Text(
                               'ContextClip',
                               style: SignalDesk.display(size: 28),

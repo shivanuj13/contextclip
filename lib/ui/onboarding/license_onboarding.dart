@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app/clipboard_controller.dart';
 import '../theme/signal_desk.dart';
+import '../widgets/brand_mark.dart';
 import '../widgets/hud_panel.dart';
 
 /// First-run gate: the GPLv3 text must be shown before the user can continue.
@@ -69,7 +70,9 @@ class _LicenseOnboardingState extends State<LicenseOnboarding> {
                 weight: FontWeight.w700,
               ).copyWith(letterSpacing: 2.0),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 12),
+            const BrandMark(size: 48),
+            const SizedBox(height: 12),
             Text('GNU GPLv3', style: SignalDesk.display(size: 28)),
             const SizedBox(height: 8),
             Text(

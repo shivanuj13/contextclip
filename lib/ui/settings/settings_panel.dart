@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app/clipboard_controller.dart';
 import '../../data/settings/app_settings.dart';
 import '../theme/signal_desk.dart';
+import '../widgets/brand_mark.dart';
 import '../widgets/hud_panel.dart';
 
 class SettingsPanel extends StatefulWidget {
@@ -71,6 +72,8 @@ class _SettingsPanelState extends State<SettingsPanel> {
               ),
               child: Row(
                 children: [
+                  const BrandMark(size: 28),
+                  const SizedBox(width: 10),
                   Text('Settings', style: SignalDesk.display(size: 22)),
                   const Spacer(),
                   CupertinoButton(

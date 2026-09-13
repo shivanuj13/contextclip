@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app/clipboard_controller.dart';
 import '../theme/signal_desk.dart';
+import '../widgets/brand_mark.dart';
 import '../widgets/feature_primer.dart';
 import '../widgets/hud_panel.dart';
 
@@ -99,7 +100,9 @@ class _StandbyPanelState extends State<StandbyPanel>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 14),
+                        const BrandMark(size: 56),
+                        const SizedBox(height: 14),
                         Text(
                           'ContextClip',
                           style: SignalDesk.display(size: 28),

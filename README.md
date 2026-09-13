@@ -1,5 +1,9 @@
 # ContextClip
 
+<p align="center">
+  <img src="assets/brand/contextclip-icon.png" width="128" height="128" alt="ContextClip">
+</p>
+
 Keyboard-first clipboard workspace for macOS. Copy as usual. When you paste
 into a terminal, an editor, or an AI agent, ContextClip can **mask secrets**
 and **combine several clips** into one clean block.
@@ -72,9 +76,17 @@ together by accident.
 ### Homebrew (recommended)
 
 ```bash
+brew trust shivanuj13/tap
 brew tap shivanuj13/tap
 brew install --cask contextclip
 ```
+
+Homebrew will not load a third-party tap until you trust it
+([Tap Trust](https://docs.brew.sh/Tap-Trust)). If `brew tap` errors with
+“untrusted tap”, run `brew trust shivanuj13/tap` and tap again.
+
+The cask name is **`contextclip`**. Do not install `context` — that is a
+different app.
 
 First launch may need a Gatekeeper bypass on unsigned builds:
 
@@ -195,42 +207,29 @@ Hotkeys, pasteboard polling, and the status item are native Swift
 
 ## Publishing a Homebrew release
 
-Official `homebrew/cask` prefers notarized Developer ID builds. For now,
-ship from your own tap: [shivanuj13/homebrew-tap](https://github.com/shivanuj13/homebrew-tap).
+Merges to `main` that **change `version:` in `pubspec.yaml`** run
+[`.github/workflows/release.yml`](.github/workflows/release.yml): analyze,
+test, `flutter build macos --release`, GitHub Release `vX.Y.Z`, then
+update the cask sha256 here and in
+[shivanuj13/homebrew-tap](https://github.com/shivanuj13/homebrew-tap).
 
-1. Bump `version` in `pubspec.yaml` if needed (currently `1.0.0+1`).
-2. Build and zip:
+Bump the **x.y.z** part (for example `1.0.0+1` → `1.0.1+1`). A `+build`
+bump alone cannot reuse tag `v1.0.0`. Other `main` merges do nothing.
 
-   ```bash
-   fvm flutter build macos --release
-   VERSION=1.0.0
-   cd build/macos/Build/Products/Release
-   ditto -c -k --keepParent ContextClip.app "ContextClip-${VERSION}-macos.zip"
-   shasum -a 256 "ContextClip-${VERSION}-macos.zip"
-   ```
+One-time: repo **Settings → Secrets → Actions → New repository secret**
 
-3. Attach the zip to a **GitHub Release** — not to the repo (the website
-   file-upload limit is 25 MB; this zip is ~28 MB). Releases allow 2 GB.
+- Name: `HOMEBREW_TAP_TOKEN`
+- Value: a fine-grained PAT that can read/write
+  `shivanuj13/homebrew-tap` contents
 
-   ```bash
-   gh release create v1.0.0 \
-     build/macos/Build/Products/Release/ContextClip-1.0.0-macos.zip \
-     --repo shivanuj13/contextclip \
-     --title "ContextClip 1.0.0" \
-     --notes "First public macOS build."
-   ```
+Without that secret the GitHub Release still publishes; the tap update
+is skipped.
 
-   Or in the browser: Releases → Draft → tag `v1.0.0` → drop the zip
-   onto the **Attach binaries** area (not “Add file” on the Code tab).
-   The asset name must stay `ContextClip-1.0.0-macos.zip`.
-4. Copy [`Casks/contextclip.rb`](Casks/contextclip.rb) into
-   `homebrew-tap/Casks/contextclip.rb`. Set `version` and replace
-   `sha256 :no_check` with the checksum from step 2.
-5. Users install with:
+Users install with:
 
-   ```bash
-   brew tap shivanuj13/tap
-   brew install --cask contextclip
-   ```
-
-On later versions, repeat 1–4 and bump the cask `version` + `sha256`.
+```bash
+brew tap shivanuj13/tap
+brew trust shivanuj13/tap
+brew install --cask contextclip
+brew upgrade --cask contextclip
+```
