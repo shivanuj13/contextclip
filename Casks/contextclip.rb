@@ -3,7 +3,7 @@
 # and replace sha256 after each GitHub Release.
 cask "contextclip" do
   version "1.0.0"
-  sha256 :no_check # replace with `shasum -a 256 ContextClip-1.0.0-macos.zip`
+  sha256 "17bf4635f29a938e6bb9b409658116d252449f4dd0fb150e396d961837de2c11"
 
   url "https://github.com/shivanuj13/contextclip/releases/download/v#{version}/ContextClip-#{version}-macos.zip"
   name "ContextClip"

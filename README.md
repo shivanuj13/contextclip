@@ -209,10 +209,20 @@ ship from your own tap: [shivanuj13/homebrew-tap](https://github.com/shivanuj13/
    shasum -a 256 "ContextClip-${VERSION}-macos.zip"
    ```
 
-3. Create a GitHub Release `v1.0.0` on
-   [shivanuj13/contextclip](https://github.com/shivanuj13/contextclip/releases)
-   and attach that zip. The asset name must match the cask URL:
-   `ContextClip-1.0.0-macos.zip`.
+3. Attach the zip to a **GitHub Release** — not to the repo (the website
+   file-upload limit is 25 MB; this zip is ~28 MB). Releases allow 2 GB.
+
+   ```bash
+   gh release create v1.0.0 \
+     build/macos/Build/Products/Release/ContextClip-1.0.0-macos.zip \
+     --repo shivanuj13/contextclip \
+     --title "ContextClip 1.0.0" \
+     --notes "First public macOS build."
+   ```
+
+   Or in the browser: Releases → Draft → tag `v1.0.0` → drop the zip
+   onto the **Attach binaries** area (not “Add file” on the Code tab).
+   The asset name must stay `ContextClip-1.0.0-macos.zip`.
 4. Copy [`Casks/contextclip.rb`](Casks/contextclip.rb) into
    `homebrew-tap/Casks/contextclip.rb`. Set `version` and replace
    `sha256 :no_check` with the checksum from step 2.
