@@ -21,10 +21,58 @@ class _AccessibilityOnboardingState extends State<AccessibilityOnboarding>
     duration: const Duration(milliseconds: 420),
   )..forward();
 
+  AppLifecycleListener? _lifecycle;
+  String? _statusHint;
+  bool _checking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(
+      onResume: () {
+        context.read<ClipboardController>().refreshAccessibility();
+      },
+    );
+  }
+
   @override
   void dispose() {
+    _lifecycle?.dispose();
     _enter.dispose();
     super.dispose();
+  }
+
+  Future<void> _recheckPermission() async {
+    if (_checking) return;
+    setState(() {
+      _checking = true;
+      _statusHint = null;
+    });
+    final controller = context.read<ClipboardController>();
+
+    // macOS can lag a beat after the toggle; poll briefly before giving up.
+    for (var i = 0; i < 6; i++) {
+      await controller.refreshAccessibility();
+      if (controller.hasAccessibility) {
+        if (mounted) {
+          setState(() {
+            _checking = false;
+            _statusHint = null;
+          });
+        }
+        return;
+      }
+      await Future<void>.delayed(const Duration(milliseconds: 400));
+    }
+
+    if (!mounted) return;
+    setState(() {
+      _checking = false;
+      _statusHint =
+          'Still not detected. Quit ContextClip from the menu bar '
+          '(ContextClip → Quit), confirm only /Applications/ContextClip '
+          'is enabled under Accessibility, then reopen the app.';
+    });
   }
 
   @override
@@ -126,7 +174,8 @@ class _AccessibilityOnboardingState extends State<AccessibilityOnboarding>
                                           ),
                                           const SizedBox(height: 4),
                                           Text(
-                                            'System Settings → Privacy & Security → Accessibility',
+                                            'System Settings → Privacy & Security → Accessibility\n'
+                                            'Enable ContextClip, then quit and reopen the app.',
                                             style: SignalDesk.mono(
                                               size: 11.5,
                                               color: SignalDesk.muted,
@@ -140,6 +189,17 @@ class _AccessibilityOnboardingState extends State<AccessibilityOnboarding>
                                 ),
                               ),
                             ),
+                            if (_statusHint != null) ...[
+                              const SizedBox(height: 14),
+                              Text(
+                                _statusHint!,
+                                style: SignalDesk.ui(
+                                  size: 13,
+                                  color: SignalDesk.warning,
+                                  height: 1.4,
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ),
@@ -177,14 +237,9 @@ class _AccessibilityOnboardingState extends State<AccessibilityOnboarding>
                             horizontal: 14,
                             vertical: 10,
                           ),
-                          onPressed: () async {
-                            await controller.refreshAccessibility();
-                            if (controller.hasAccessibility) {
-                              await controller.hidePalette();
-                            }
-                          },
+                          onPressed: _checking ? null : _recheckPermission,
                           child: Text(
-                            'I’ve Enabled It',
+                            _checking ? 'Checking…' : 'I’ve Enabled It',
                             style: SignalDesk.ui(
                               size: 14,
                               weight: FontWeight.w500,
