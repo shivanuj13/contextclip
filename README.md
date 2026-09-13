@@ -72,7 +72,7 @@ together by accident.
 ### Homebrew (recommended)
 
 ```bash
-brew tap buffersync/tap
+brew tap shivanuj13/tap
 brew install --cask contextclip
 ```
 
@@ -85,15 +85,16 @@ open -a ContextClip
 
 Or Right-click **ContextClip.app** → **Open**.
 
+Source: [github.com/shivanuj13/contextclip](https://github.com/shivanuj13/contextclip).
 The cask formula lives at [`Casks/contextclip.rb`](Casks/contextclip.rb)
-for the BufferSync tap.
+and is published from the `shivanuj13/homebrew-tap` tap.
 
 ### Build from source
 
 Needs [FVM](https://fvm.app) (Flutter 3.47.2) and Xcode.
 
 ```bash
-git clone https://github.com/buffersync/contextclip.git
+git clone https://github.com/shivanuj13/contextclip.git
 cd contextclip
 fvm flutter pub get
 fvm flutter build macos --release
@@ -191,3 +192,35 @@ fvm flutter run -d macos
 
 Hotkeys, pasteboard polling, and the status item are native Swift
 (`macos/Runner`). Dart owns sanitization, history, and UI.
+
+## Publishing a Homebrew release
+
+Official `homebrew/cask` prefers notarized Developer ID builds. For now,
+ship from your own tap: [shivanuj13/homebrew-tap](https://github.com/shivanuj13/homebrew-tap).
+
+1. Bump `version` in `pubspec.yaml` if needed (currently `1.0.0+1`).
+2. Build and zip:
+
+   ```bash
+   fvm flutter build macos --release
+   VERSION=1.0.0
+   cd build/macos/Build/Products/Release
+   ditto -c -k --keepParent ContextClip.app "ContextClip-${VERSION}-macos.zip"
+   shasum -a 256 "ContextClip-${VERSION}-macos.zip"
+   ```
+
+3. Create a GitHub Release `v1.0.0` on
+   [shivanuj13/contextclip](https://github.com/shivanuj13/contextclip/releases)
+   and attach that zip. The asset name must match the cask URL:
+   `ContextClip-1.0.0-macos.zip`.
+4. Copy [`Casks/contextclip.rb`](Casks/contextclip.rb) into
+   `homebrew-tap/Casks/contextclip.rb`. Set `version` and replace
+   `sha256 :no_check` with the checksum from step 2.
+5. Users install with:
+
+   ```bash
+   brew tap shivanuj13/tap
+   brew install --cask contextclip
+   ```
+
+On later versions, repeat 1–4 and bump the cask `version` + `sha256`.

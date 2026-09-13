@@ -10,5 +10,6 @@ without publishing source.
 
 ## How to get one
 
-Open a GitHub issue with the subject **Commercial license**, or contact
-BufferSync through the repository listed in [README.md](README.md).
+Open a GitHub issue on
+[shivanuj13/contextclip](https://github.com/shivanuj13/contextclip)
+with the subject **Commercial license**.
