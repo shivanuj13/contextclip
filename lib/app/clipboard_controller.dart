@@ -31,6 +31,7 @@ class ClipboardController extends ChangeNotifier {
 
   NativeBridge get bridge => _bridge;
   AppSettings get settings => _settingsStore.settings;
+  bool get licenseAccepted => _settingsStore.licenseAccepted;
   List<DenyRule> get _denyRules => settings.denyRules;
 
   Future<void> initialize() async {
@@ -58,13 +59,12 @@ class ClipboardController extends ChangeNotifier {
     ready = true;
     notifyListeners();
 
-    if (!hasAccessibility) {
-      await _bridge.showWindow();
-      return;
-    }
-
-    // Keep the armed primer visible until the user dismisses it.
     await _bridge.showWindow();
+  }
+
+  Future<void> acceptLicense() async {
+    await _settingsStore.acceptLicense();
+    notifyListeners();
   }
 
   Future<void> _pushHotkeysToNative() async {

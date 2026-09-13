@@ -8,6 +8,7 @@ import 'data/database/database.dart';
 import 'data/history_store.dart';
 import 'data/settings/settings_store.dart';
 import 'ui/onboarding/accessibility_onboarding.dart';
+import 'ui/onboarding/license_onboarding.dart';
 import 'ui/palette/command_palette.dart';
 import 'ui/settings/settings_panel.dart';
 import 'ui/standby/standby_panel.dart';
@@ -75,6 +76,10 @@ class _RootShell extends StatelessWidget {
 
     if (!controller.ready) {
       return const StandbyPanel(booting: true);
+    }
+
+    if (!controller.licenseAccepted) {
+      return const LicenseOnboarding();
     }
 
     if (!controller.hasAccessibility) {

@@ -6,7 +6,7 @@ typedef BridgeVoidCallback = void Function();
 /// Typed MethodChannel bridge to the macOS native host.
 class NativeBridge {
   NativeBridge({MethodChannel? channel})
-      : _channel = channel ?? const MethodChannel('com.contextclip.mac/bridge');
+      : _channel = channel ?? const MethodChannel('com.buffersync.contextclip/bridge');
 
   final MethodChannel _channel;
 

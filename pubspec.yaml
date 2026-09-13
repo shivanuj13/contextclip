@@ -1,5 +1,5 @@
 name: context_clip
-description: "Keyboard-first clipboard workspace for developers and AI agents."
+description: "Keyboard-first macOS clipboard workspace that redacts secrets and packs multi-clip context."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -29,3 +29,5 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - LICENSE

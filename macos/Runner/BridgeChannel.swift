@@ -3,7 +3,7 @@ import FlutterMacOS
 import Security
 
 final class BridgeChannel {
-  static let name = "com.contextclip.mac/bridge"
+  static let name = "com.buffersync.contextclip/bridge"
 
   private let channel: FlutterMethodChannel
   private var hotkeyInterceptor: HotkeyInterceptor?
